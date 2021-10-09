@@ -291,31 +291,31 @@
           sunPos.normalize();
           
           // update light colors and intensities
-          if (this.sunlight) {
-            this.sunlight.setAttribute('position', this.data.lightPosition);
-            if (skyType != 'atmosphere') {
-              // dim down the sky color for the light
-              var skycol = new THREE.Color(this.data.skyColor);
-              skycol.r = (skycol.r + 1.0) / 2.0;
-              skycol.g = (skycol.g + 1.0) / 2.0;
-              skycol.b = (skycol.b + 1.0) / 2.0;
-              this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
-              this.sunlight.setAttribute('light', {'intensity': 0.6});
-              this.hemilight.setAttribute('light', {'intensity': 0.6});
-            }
-            else {
-              this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-              this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-            }
+        //   if (this.sunlight) {
+        //     this.sunlight.setAttribute('position', this.data.lightPosition);
+        //     if (skyType != 'atmosphere') {
+        //       // dim down the sky color for the light
+        //       var skycol = new THREE.Color(this.data.skyColor);
+        //       skycol.r = (skycol.r + 1.0) / 2.0;
+        //       skycol.g = (skycol.g + 1.0) / 2.0;
+        //       skycol.b = (skycol.b + 1.0) / 2.0;
+        //       this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
+        //       this.sunlight.setAttribute('light', {'intensity': 0.6});
+        //       this.hemilight.setAttribute('light', {'intensity': 0.6});
+        //     }
+        //     else {
+        //       this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+        //       this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+        //     }
   
-            this.sunlight.setAttribute('light', {
-              castShadow: this.data.shadow,
-              shadowCameraLeft: -this.data.shadowSize,
-              shadowCameraBottom: -this.data.shadowSize,
-              shadowCameraRight: this.data.shadowSize,
-              shadowCameraTop: this.data.shadowSize
-            });
-          } 
+        //     this.sunlight.setAttribute('light', {
+        //       castShadow: this.data.shadow,
+        //       shadowCameraLeft: -this.data.shadowSize,
+        //       shadowCameraBottom: -this.data.shadowSize,
+        //       shadowCameraRight: this.data.shadowSize,
+        //       shadowCameraTop: this.data.shadowSize
+        //     });
+        //   } 
   
           // update sky colors
         //   if (skyType != oldData.skyType ||
