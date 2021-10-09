@@ -62,8 +62,8 @@
           preset: {default: 'default', oneOf: ['none', 'default', 'contact', 'egypt', 'checkerboard', 'forest', 'goaland', 'yavapai', 'goldmine', 'arches', 'threetowers', 'poison', 'tron', 'japan', 'dream', 'volcano', 'starry', 'osiris']},
           seed: {type: 'int', default: 1, min: 0, max: 1000},
   
-        //   skyType: {default: 'color', oneOf:['color', 'gradient', 'atmosphere']},
-        //   skyColor: {type: 'color'},
+          skyType: {default: 'color', oneOf:['color', 'gradient', 'atmosphere']},
+          skyColor: {type: 'color'},
           horizonColor: {type: 'color'},
           lighting: {default: 'distant', oneOf: ['none', 'distant', 'point']},
           shadow: {default: false},
@@ -286,7 +286,7 @@
           }
   
   
-          var skyType = this.data.skyType;
+        //   var skyType = this.data.skyType;
           var sunPos = new THREE.Vector3(this.data.lightPosition.x, this.data.lightPosition.y, this.data.lightPosition.z);
           sunPos.normalize();
           
