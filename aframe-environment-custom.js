@@ -62,8 +62,8 @@
 	    active: {default: false},
 	    preset: {default: 'default', oneOf: ['none', 'default', 'contact', 'egypt', 'checkerboard', 'forest', 'goaland', 'yavapai', 'goldmine', 'arches', 'threetowers', 'poison', 'tron', 'japan', 'dream', 'volcano', 'starry', 'osiris']},
 	    seed: {type: 'int', default: 1, min: 0, max: 1000},
-	    // skyType: {default: 'color', oneOf:['none', 'color', 'gradient', 'atmosphere']},
-	    // skyColor: {type: 'color'},
+	    skyType: {default: 'color', oneOf:['none', 'color', 'gradient', 'atmosphere']},
+	    skyColor: {type: 'color'},
 	    horizonColor: {type: 'color'},
 	    lighting: {default: 'distant', oneOf: ['none', 'distant', 'point']},
 	    shadow: {default: false},
@@ -200,10 +200,10 @@
 	    this.userFog = this.el.sceneEl.getAttribute('fog');
 
 	    // create sky
-	    this.sky = document.createElement('a-sky');
-	    this.sky.setAttribute('radius', this.STAGE_SIZE);
-	    this.sky.setAttribute('theta-length', 110);
-	    this.sky.classList.add('environment');
+	    // this.sky = document.createElement('a-sky');
+	    // this.sky.setAttribute('radius', this.STAGE_SIZE);
+	    // this.sky.setAttribute('theta-length', 110);
+	    // this.sky.classList.add('environment');
 
 	    // stars are created when needed
 	    this.stars = null;
