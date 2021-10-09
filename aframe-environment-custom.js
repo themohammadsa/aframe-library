@@ -62,8 +62,8 @@
 	    active: {default: false},
 	    preset: {default: 'default', oneOf: ['none', 'default', 'contact', 'egypt', 'checkerboard', 'forest', 'goaland', 'yavapai', 'goldmine', 'arches', 'threetowers', 'poison', 'tron', 'japan', 'dream', 'volcano', 'starry', 'osiris']},
 	    seed: {type: 'int', default: 1, min: 0, max: 1000},
-	    // skyType: {default: 'color', oneOf:['none', 'color', 'gradient', 'atmosphere']},
-	    // skyColor: {type: 'color'},
+	    skyType: {default: 'color', oneOf:['none', 'color', 'gradient', 'atmosphere']},
+	    skyColor: {type: 'color'},
 	    horizonColor: {type: 'color'},
 	    lighting: {default: 'distant', oneOf: ['none', 'distant', 'point']},
 	    shadow: {default: false},
@@ -96,7 +96,7 @@
 
 	  presets: {
 	    'none' : {},
-	    'default' : {active: true, seed: 1, skyType: 'color', skyColor: '#0000ffff', horizonColor: '#ddd', lighting: 'distant', lightPosition: { x: -0.11, y: 1, z: 0.33}, fog: 0.78, flatShading: false, playArea: 1, ground: 'hills', groundYScale: 3, groundTexture: 'checkerboard', groundColor: '#454545', groundColor2: '#5d5d5d', dressing: 'none', dressingAmount: 10, dressingColor: '#795449', dressingScale: 1, dressingVariance: { x: 0, y: 0, z: 0}, dressingUniformScale: true, dressingOnPlayArea: 0, grid: 'none', gridColor: '#ccc', shadow: false},
+	    'default' : {active: true, seed: 1, skyType: 'atmosphere', skyColor: '#88c', horizonColor: '#ddd', lighting: 'distant', lightPosition: { x: -0.11, y: 1, z: 0.33}, fog: 0.78, flatShading: false, playArea: 1, ground: 'hills', groundYScale: 3, groundTexture: 'checkerboard', groundColor: '#454545', groundColor2: '#5d5d5d', dressing: 'none', dressingAmount: 10, dressingColor: '#795449', dressingScale: 1, dressingVariance: { x: 0, y: 0, z: 0}, dressingUniformScale: true, dressingOnPlayArea: 0, grid: 'none', gridColor: '#ccc', shadow: false},
 	    'contact': {active: true, seed: 14, skyType: 'gradient', skyColor: '#478d54', horizonColor: '#b696cb', lighting: 'distant', lightPosition: { x: 0, y: 2.01, z: -1}, fog: 0.8, flatShading: false, playArea: 1, ground: 'spikes', groundYScale: 4.91, groundTexture: 'none', groundColor: '#2e455f', groundColor2: '#694439', dressing: 'apparatus', dressingAmount: 7, dressingColor: '#657067', dressingScale: 20, dressingVariance: { x: 20, y: 20, z: 20}, dressingUniformScale: true, dressingOnPlayArea: 0, grid: '1x1', gridColor: '#478d54', shadow: false},
 	    'egypt': {active: true, seed: 26, skyType: 'gradient', skyColor: '#1b7660', horizonColor: '#e4b676', lighting: 'distant', lightPosition: { x: 0, y: 1.65, z: -1}, fog: 0.75, flatShading: false, playArea: 1, ground: 'hills', groundYScale: 5, groundTexture: 'walkernoise', groundColor: '#664735', groundColor2: '#6c4b39', dressing: 'pyramids', dressingAmount: 10, dressingColor: '#7c5c45', dressingScale: 5, dressingVariance: { x: 20, y: 20, z: 20}, dressingUniformScale: true, dressingOnPlayArea: 0, grid: 'spots', gridColor: '#e4b676', shadow: false},
 	    'checkerboard': {active: true, seed: 1, skyType: 'gradient', skyColor: '#0d0d0d', horizonColor: '#404040', lighting: 'distant', lightPosition: { x: 0, y: 1, z: -0.2}, fog: 0.81, flatShading: true, playArea: 1, ground: 'hills', groundYScale: 4.81, groundTexture: 'checkerboard', groundColor: '#252525', groundColor2: '#111111', dressing: 'cubes', dressingAmount: 10, dressingColor: '#9f9f9f', dressingScale: 1.51, dressingVariance: { x: 5, y: 20, z: 5}, dressingUniformScale: true, dressingOnPlayArea: 0, grid: 'dots', gridColor: '#ccc', shadow: false},
@@ -200,10 +200,10 @@
 	    this.userFog = this.el.sceneEl.getAttribute('fog');
 
 	    // create sky
-	    // this.sky = document.createElement('a-sky');
-	    // this.sky.setAttribute('radius', this.STAGE_SIZE);
-	    // this.sky.setAttribute('theta-length', 110);
-	    // this.sky.classList.add('environment');
+	    this.sky = document.createElement('a-sky');
+	    this.sky.setAttribute('radius', this.STAGE_SIZE);
+	    this.sky.setAttribute('theta-length', 110);
+	    this.sky.classList.add('environment');
 
 	    // stars are created when needed
 	    this.stars = null;
@@ -245,46 +245,46 @@
 	    this.el.appendChild(this.sunlight);
 	    this.el.appendChild(this.ground);
 	    this.el.appendChild(this.dressing);
-	    // this.el.appendChild(this.sky);
+	    this.el.appendChild(this.sky);
 	  },
 
 	  // returns a fog color from a specific sky type and sun height
-	//   getFogColor: function (skyType, sunHeight) {
+	  getFogColor: function (skyType, sunHeight) {
 
-	//     var fogColor;
-	//     if (skyType == 'color' || skyType == 'none'){
-	//       fogColor = new THREE.Color(this.environmentData.skyColor);
-	//     }
-	//     else if (skyType == 'gradient'){
-	//       fogColor = new THREE.Color(this.environmentData.horizonColor);
-	//     }
-	//     else if (skyType == 'atmosphere')
-	//     {
-	//       var fogRatios = [        1,       0.5,      0.22,       0.1,      0.05,     0];
-	//       var fogColors = ['#C0CDCF', '#81ADC5', '#525e62', '#2a2d2d', '#141616', '#000'];
+	    var fogColor;
+	    if (skyType == 'color' || skyType == 'none'){
+	      fogColor = new THREE.Color(this.environmentData.skyColor);
+	    }
+	    else if (skyType == 'gradient'){
+	      fogColor = new THREE.Color(this.environmentData.horizonColor);
+	    }
+	    else if (skyType == 'atmosphere')
+	    {
+	      var fogRatios = [        1,       0.5,      0.22,       0.1,      0.05,     0];
+	      var fogColors = ['#C0CDCF', '#81ADC5', '#525e62', '#2a2d2d', '#141616', '#000'];
 
-	//       if (sunHeight <= 0) return '#000';
+	      if (sunHeight <= 0) return '#000';
 
-	//       sunHeight = Math.min(1, sunHeight);
+	      sunHeight = Math.min(1, sunHeight);
 
-	//       for (var i = 0; i < fogRatios.length; i++){
-	//         if (sunHeight > fogRatios[i]){
-	//           var c1 = new THREE.Color(fogColors[i - 1]);
-	//           var c2 = new THREE.Color(fogColors[i]);
-	//           var a = (sunHeight - fogRatios[i]) / (fogRatios[i - 1] - fogRatios[i]);
-	//           c2.lerp(c1, a);
-	//           fogColor = c2;
-	//           break;
-	//         }
-	//       }
-	//     }
-	//     // dim down the color
-	//     fogColor.multiplyScalar(0.9);
-	//     // mix it a bit with ground color
-	//     fogColor.lerp(new THREE.Color(this.data.groundColor), 0.3);
+	      for (var i = 0; i < fogRatios.length; i++){
+	        if (sunHeight > fogRatios[i]){
+	          var c1 = new THREE.Color(fogColors[i - 1]);
+	          var c2 = new THREE.Color(fogColors[i]);
+	          var a = (sunHeight - fogRatios[i]) / (fogRatios[i - 1] - fogRatios[i]);
+	          c2.lerp(c1, a);
+	          fogColor = c2;
+	          break;
+	        }
+	      }
+	    }
+	    // dim down the color
+	    fogColor.multiplyScalar(0.9);
+	    // mix it a bit with ground color
+	    fogColor.lerp(new THREE.Color(this.data.groundColor), 0.3);
 
-	//     return '#' + fogColor.getHexString();
-	//   },
+	    return '#' + fogColor.getHexString();
+	  },
 
 	  update: function (oldDataNonPreset) {
 	    var oldData;
@@ -301,75 +301,75 @@
 	      console.log(this.environmentData);
 	    }
 
-	   // var skyType = this.environmentData.skyType;
+	    var skyType = this.environmentData.skyType;
 	    var sunPos = new THREE.Vector3(this.environmentData.lightPosition.x, this.environmentData.lightPosition.y, this.environmentData.lightPosition.z);
 	    sunPos.normalize();
 
 	    // update light colors and intensities
-	    // if (this.sunlight) {
-	    //   this.sunlight.setAttribute('position', this.environmentData.lightPosition);
-	    //   if (skyType != 'atmosphere') {
-	    //     // dim down the sky color for the light
-	    //     var skycol = new THREE.Color(this.environmentData.skyColor);
-	    //     skycol.r = (skycol.r + 1.0) / 2.0;
-	    //     skycol.g = (skycol.g + 1.0) / 2.0;
-	    //     skycol.b = (skycol.b + 1.0) / 2.0;
-	    //     this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
-	    //     this.sunlight.setAttribute('light', {'intensity': 0.6});
-	    //     this.hemilight.setAttribute('light', {'intensity': 0.6});
-	    //   }
-	    //   else {
-	    //     this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-	    //     this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-	    //   }
+	    if (this.sunlight) {
+	      this.sunlight.setAttribute('position', this.environmentData.lightPosition);
+	      if (skyType != 'atmosphere') {
+	        // dim down the sky color for the light
+	        var skycol = new THREE.Color(this.environmentData.skyColor);
+	        skycol.r = (skycol.r + 1.0) / 2.0;
+	        skycol.g = (skycol.g + 1.0) / 2.0;
+	        skycol.b = (skycol.b + 1.0) / 2.0;
+	        this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
+	        this.sunlight.setAttribute('light', {'intensity': 0.6});
+	        this.hemilight.setAttribute('light', {'intensity': 0.6});
+	      }
+	      else {
+	        this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+	        this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+	      }
 
-	    //   this.sunlight.setAttribute('light', {
-	    //     castShadow: this.environmentData.shadow,
-	    //     shadowCameraLeft: -this.environmentData.shadowSize,
-	    //     shadowCameraBottom: -this.environmentData.shadowSize,
-	    //     shadowCameraRight: this.environmentData.shadowSize,
-	    //     shadowCameraTop: this.environmentData.shadowSize
-	    //   });
-	    // }
+	      this.sunlight.setAttribute('light', {
+	        castShadow: this.environmentData.shadow,
+	        shadowCameraLeft: -this.environmentData.shadowSize,
+	        shadowCameraBottom: -this.environmentData.shadowSize,
+	        shadowCameraRight: this.environmentData.shadowSize,
+	        shadowCameraTop: this.environmentData.shadowSize
+	      });
+	    }
 
 	    // update sky colors
-	    // if (skyType !== oldData.skyType ||
-	    //   this.environmentData.skyColor != oldData.skyColor ||
-	    //   this.environmentData.horizonColor != oldData.horizonColor) {
+	    if (skyType !== oldData.skyType ||
+	      this.environmentData.skyColor != oldData.skyColor ||
+	      this.environmentData.horizonColor != oldData.horizonColor) {
 
-	    //   var mat = {};
-	    //   mat.shader = {'none': 'flat', 'color': 'flat', 'gradient': 'gradientshader', 'atmosphere': 'skyshader'}[skyType];
-	    //   if (this.stars) {
-	    //     this.stars.setAttribute('visible', skyType == 'atmosphere');
-	    //   }
-	    //   if (skyType == 'color') {
-	    //     mat.color = this.environmentData.skyColor;
-	    //     mat.fog = false;
-	    //   }
-	    //   else if (skyType == 'gradient') {
-	    //     mat.topColor = this.environmentData.skyColor;
-	    //     mat.bottomColor = this.environmentData.horizonColor;
-	    //   }
+	      var mat = {};
+	      mat.shader = {'none': 'flat', 'color': 'flat', 'gradient': 'gradientshader', 'atmosphere': 'skyshader'}[skyType];
+	      if (this.stars) {
+	        this.stars.setAttribute('visible', skyType == 'atmosphere');
+	      }
+	      if (skyType == 'color') {
+	        mat.color = this.environmentData.skyColor;
+	        mat.fog = false;
+	      }
+	      else if (skyType == 'gradient') {
+	        mat.topColor = this.environmentData.skyColor;
+	        mat.bottomColor = this.environmentData.horizonColor;
+	      }
 
-	    //   this.sky.setAttribute('material', mat);
-	    // }
+	      this.sky.setAttribute('material', mat);
+	    }
 
-	    // // set atmosphere sun position and stars
-	    // if (skyType == 'atmosphere') {
-	    //   this.sky.setAttribute('material', {'sunPosition': sunPos});
-	    //   this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
-	    // }
+	    // set atmosphere sun position and stars
+	    if (skyType == 'atmosphere') {
+	      this.sky.setAttribute('material', {'sunPosition': sunPos});
+	      this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
+	    }
 
 	    // set fog color
-	    // if (this.environmentData.fog > 0) {
-	    //   this.el.sceneEl.setAttribute('fog', {
-	    //     color: this.getFogColor(skyType, sunPos.y),
-	    //     far: (1.01 - this.environmentData.fog) * this.STAGE_SIZE * 2
-	    //   });
-	    // }
-	    // else {
-	    //   this.el.sceneEl.removeAttribute('fog');
-	    // }
+	    if (this.environmentData.fog > 0) {
+	      this.el.sceneEl.setAttribute('fog', {
+	        color: this.getFogColor(skyType, sunPos.y),
+	        far: (1.01 - this.environmentData.fog) * this.STAGE_SIZE * 2
+	      });
+	    }
+	    else {
+	      this.el.sceneEl.removeAttribute('fog');
+	    }
 
 	    // scene lights
 	    this.sunlight.setAttribute('light', {type: this.environmentData.lighting == 'point' ? 'point' : 'directional'});
@@ -415,7 +415,7 @@
 	      this.updateDressing();
 	    }
 
-	   // this.sky.setAttribute('visible', skyType !== 'none');
+	    this.sky.setAttribute('visible', skyType !== 'none');
 
 	    this.el.setAttribute('visible', this.environmentData.active);
 	    if (!this.environmentData.active) {
@@ -1247,6 +1247,85 @@
 	    '}'
 	  ].join('\n')
 	});
+
+    AFRAME.registerComponent('star-system', {
+        schema: {
+          color: {
+            type: 'string',
+            default: "#FFF"
+          },
+          radius: {
+            type: 'number',
+            default: 300,
+            min: 0,
+          },
+          depth: {
+            type: 'number',
+            default: 300,
+            min: 0,
+          },
+          size: {
+            type: 'number',
+            default: 1,
+            min: 0,
+          },
+          count: {
+            type: 'number',
+            default: 10000,
+            min: 0,
+          },
+          texture: {
+            type: 'asset',
+            default: ''
+          }
+        },
+      
+        update: function() {
+          // Check for and load star sprite
+          let texture = {};
+          if (this.data.texture) {
+            texture.transparent = true;
+            texture.map = new THREE.TextureLoader().load(this.data.texture);
+          }
+      
+          const stars = new THREE.Geometry();
+      
+          // Randomly create the vertices for the stars
+          while (stars.vertices.length < this.data.count) {
+              stars.vertices.push(this.randomVectorBetweenSpheres(this.data.radius, this.data.depth));
+          }
+      
+          // Set the star display options
+          const starMaterial = new THREE.PointsMaterial(Object.assign(texture, {
+            color: this.data.color,
+            size: this.data.size
+          }));
+      
+          // Add the star particles to the element
+          this.el.setObject3D('star-system', new THREE.Points(stars, starMaterial));
+        },
+      
+        remove: function() {
+          this.el.removeObject3D('star-system');
+        },
+      
+        // Returns a random vector between the inner sphere
+        // and the outer sphere created with radius + depth
+        randomVectorBetweenSpheres: function(radius, depth) {
+          const randomRadius = Math.floor(Math.random() * (radius + depth - radius + 1) + radius);
+          return this.randomSphereSurfaceVector(randomRadius);
+        },
+      
+        // Returns a vector on the face of sphere with given radius
+        randomSphereSurfaceVector: function(radius) {
+          const theta = 2 * Math.PI * Math.random();
+          const phi = Math.acos(2 * Math.random() - 1);
+          const x = radius * Math.sin(phi) * Math.cos(theta);
+          const y = radius * Math.sin(phi) * Math.sin(theta);
+          const z = radius * Math.cos(phi);
+          return new THREE.Vector3(x, y, z);
+        }
+      });
 
 	// perlin noise generator
 	// from https://gist.github.com/banksean/304522
