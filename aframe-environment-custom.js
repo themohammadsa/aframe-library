@@ -62,8 +62,8 @@
           preset: {default: 'default', oneOf: ['none', 'default', 'contact', 'egypt', 'checkerboard', 'forest', 'goaland', 'yavapai', 'goldmine', 'arches', 'threetowers', 'poison', 'tron', 'japan', 'dream', 'volcano', 'starry', 'osiris']},
           seed: {type: 'int', default: 1, min: 0, max: 1000},
   
-        //   skyType: {default: 'color', oneOf:['color', 'gradient', 'atmosphere']},
-        //   skyColor: {type: 'color'},
+          skyType: {default: 'color', oneOf:['color', 'gradient', 'atmosphere']},
+          skyColor: {type: 'color'},
           horizonColor: {type: 'color'},
           lighting: {default: 'distant', oneOf: ['none', 'distant', 'point']},
           shadow: {default: false},
@@ -195,9 +195,9 @@
           }
   
           // create sky
-        //   this.sky = document.createElement('a-sky');
-        //   this.sky.setAttribute('radius', this.STAGE_SIZE);
-        //   this.sky.setAttribute('theta-length', 110);
+          this.sky = document.createElement('a-sky');
+          this.sky.setAttribute('radius', this.STAGE_SIZE);
+          this.sky.setAttribute('theta-length', 110);
   
           // stars are created when needed
           this.stars = null;
@@ -237,42 +237,42 @@
         },
   
         // returns a fog color from a specific sky type and sun height
-        // getFogColor: function (skyType, sunHeight) {
+        getFogColor: function (skyType, sunHeight) {
   
-        //   var fogColor;
-        //   if (skyType == 'color'){
-        //     fogColor = new THREE.Color(this.data.skyColor);
-        //   }
-        //   else if (skyType == 'gradient'){
-        //     fogColor = new THREE.Color(this.data.horizonColor);
-        //   }
-        //   else if (skyType == 'atmosphere')
-        //   {
-        //     var fogRatios = [        1,       0.5,      0.22,       0.1,      0.05,     0];
-        //     var fogColors = ['#C0CDCF', '#81ADC5', '#525e62', '#2a2d2d', '#141616', '#000'];
+          var fogColor;
+          if (skyType == 'color'){
+            fogColor = new THREE.Color(this.data.skyColor);
+          }
+          else if (skyType == 'gradient'){
+            fogColor = new THREE.Color(this.data.horizonColor);
+          }
+          else if (skyType == 'atmosphere')
+          {
+            var fogRatios = [        1,       0.5,      0.22,       0.1,      0.05,     0];
+            var fogColors = ['#C0CDCF', '#81ADC5', '#525e62', '#2a2d2d', '#141616', '#000'];
   
-        //     if (sunHeight <= 0) return '#000';
+            if (sunHeight <= 0) return '#000';
   
-        //     sunHeight = Math.min(1, sunHeight);
+            sunHeight = Math.min(1, sunHeight);
   
-        //     for (var i = 0; i < fogRatios.length; i++){
-        //       if (sunHeight > fogRatios[i]){
-        //         var c1 = new THREE.Color(fogColors[i - 1]);
-        //         var c2 = new THREE.Color(fogColors[i]);
-        //         var a = (sunHeight - fogRatios[i]) / (fogRatios[i - 1] - fogRatios[i]);
-        //         c2.lerp(c1, a);
-        //         fogColor = c2;
-        //         break;
-        //       }
-        //     }
-        //   }
-        //   // dim down the color
-        //   fogColor.multiplyScalar(0.9);
-        //   // mix it a bit with ground color
-        //   fogColor.lerp(new THREE.Color(this.data.groundColor), 0.3);
+            for (var i = 0; i < fogRatios.length; i++){
+              if (sunHeight > fogRatios[i]){
+                var c1 = new THREE.Color(fogColors[i - 1]);
+                var c2 = new THREE.Color(fogColors[i]);
+                var a = (sunHeight - fogRatios[i]) / (fogRatios[i - 1] - fogRatios[i]);
+                c2.lerp(c1, a);
+                fogColor = c2;
+                break;
+              }
+            }
+          }
+          // dim down the color
+          fogColor.multiplyScalar(0.9);
+          // mix it a bit with ground color
+          fogColor.lerp(new THREE.Color(this.data.groundColor), 0.3);
   
-        //   return '#' + fogColor.getHexString();
-        // },
+          return '#' + fogColor.getHexString();
+        },
   
         update: function (oldData) {
           // preset changed
@@ -286,36 +286,36 @@
           }
   
   
-        //   var skyType = this.data.skyType;
+          var skyType = this.data.skyType;
           var sunPos = new THREE.Vector3(this.data.lightPosition.x, this.data.lightPosition.y, this.data.lightPosition.z);
           sunPos.normalize();
           
           // update light colors and intensities
-        //   if (this.sunlight) {
-        //     this.sunlight.setAttribute('position', this.data.lightPosition);
-        //     if (skyType != 'atmosphere') {
-        //       // dim down the sky color for the light
-        //       var skycol = new THREE.Color(this.data.skyColor);
-        //       skycol.r = (skycol.r + 1.0) / 2.0;
-        //       skycol.g = (skycol.g + 1.0) / 2.0;
-        //       skycol.b = (skycol.b + 1.0) / 2.0;
-        //       this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
-        //       this.sunlight.setAttribute('light', {'intensity': 0.6});
-        //       this.hemilight.setAttribute('light', {'intensity': 0.6});
-        //     }
-        //     else {
-        //       this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-        //       this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
-        //     }
+          if (this.sunlight) {
+            this.sunlight.setAttribute('position', this.data.lightPosition);
+            if (skyType != 'atmosphere') {
+              // dim down the sky color for the light
+              var skycol = new THREE.Color(this.data.skyColor);
+              skycol.r = (skycol.r + 1.0) / 2.0;
+              skycol.g = (skycol.g + 1.0) / 2.0;
+              skycol.b = (skycol.b + 1.0) / 2.0;
+              this.hemilight.setAttribute('light', {'color': '#' + skycol.getHexString()});
+              this.sunlight.setAttribute('light', {'intensity': 0.6});
+              this.hemilight.setAttribute('light', {'intensity': 0.6});
+            }
+            else {
+              this.sunlight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+              this.hemilight.setAttribute('light', {'intensity': 0.1 + sunPos.y * 0.5});
+            }
   
-        //     this.sunlight.setAttribute('light', {
-        //       castShadow: this.data.shadow,
-        //       shadowCameraLeft: -this.data.shadowSize,
-        //       shadowCameraBottom: -this.data.shadowSize,
-        //       shadowCameraRight: this.data.shadowSize,
-        //       shadowCameraTop: this.data.shadowSize
-        //     });
-        //   } 
+            this.sunlight.setAttribute('light', {
+              castShadow: this.data.shadow,
+              shadowCameraLeft: -this.data.shadowSize,
+              shadowCameraBottom: -this.data.shadowSize,
+              shadowCameraRight: this.data.shadowSize,
+              shadowCameraTop: this.data.shadowSize
+            });
+          } 
   
           // update sky colors
         //   if (skyType != oldData.skyType ||
@@ -341,21 +341,21 @@
         //   }
   
           // set atmosphere sun position and stars
-        //   if (skyType == 'atmosphere') {
-        //     this.sky.setAttribute('material', {'sunPosition': sunPos});
-        //     this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
-        //   } 
+          if (skyType == 'atmosphere') {
+            this.sky.setAttribute('material', {'sunPosition': sunPos});
+            this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
+          } 
   
-        //   // set fog color
-        //   if (this.data.fog > 0) {
-        //     this.el.sceneEl.setAttribute('fog', {
-        //       color: this.getFogColor(skyType, sunPos.y), 
-        //       far: (1.01 - this.data.fog) * this.STAGE_SIZE * 2
-        //     });
-        //   }
-        //   else {
-        //     this.el.sceneEl.removeAttribute('fog');
-        //   }
+          // set fog color
+          if (this.data.fog > 0) {
+            this.el.sceneEl.setAttribute('fog', {
+              color: this.getFogColor(skyType, sunPos.y), 
+              far: (1.01 - this.data.fog) * this.STAGE_SIZE * 2
+            });
+          }
+          else {
+            this.el.sceneEl.removeAttribute('fog');
+          }
   
           // scene lights
           if (this.data.lighting !== oldData.lighting) {
