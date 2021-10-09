@@ -341,21 +341,21 @@
         //   }
   
           // set atmosphere sun position and stars
-          if (skyType == 'atmosphere') {
-            this.sky.setAttribute('material', {'sunPosition': sunPos});
-            this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
-          } 
+        //   if (skyType == 'atmosphere') {
+        //     this.sky.setAttribute('material', {'sunPosition': sunPos});
+        //     this.setStars((1 - Math.max(0, (sunPos.y + 0.08) * 8)) * 2000 );
+        //   } 
   
-          // set fog color
-          if (this.data.fog > 0) {
-            this.el.sceneEl.setAttribute('fog', {
-              color: this.getFogColor(skyType, sunPos.y), 
-              far: (1.01 - this.data.fog) * this.STAGE_SIZE * 2
-            });
-          }
-          else {
-            this.el.sceneEl.removeAttribute('fog');
-          }
+        //   // set fog color
+        //   if (this.data.fog > 0) {
+        //     this.el.sceneEl.setAttribute('fog', {
+        //       color: this.getFogColor(skyType, sunPos.y), 
+        //       far: (1.01 - this.data.fog) * this.STAGE_SIZE * 2
+        //     });
+        //   }
+        //   else {
+        //     this.el.sceneEl.removeAttribute('fog');
+        //   }
   
           // scene lights
           if (this.data.lighting !== oldData.lighting) {
